@@ -3,28 +3,26 @@ square = \x -> x*x
 
 --Implemente as funções anteriormente escritas usando expressões lambda
 --consulte suas implementacoes anteriores para a documentacao dessas funcoes
---pow x y = undefined
-pow = \x y -> x^y
 
---fatorial x = undefined
-fatorial = \x -> if x == 0 then 1 else x * fatorial (x-1)
+pow = fix (\f x y -> if y == 0 then 1 else x * f x (y-1))
 
---isPrime x = undefined
-isPrime = \x -> if x == 1 then True 
-            else length (filter (\y -> mod x y == 0) [1..x]) == 2
-fib = \x -> if x<=2 then 1
-            else fib (x-1) + fib (x-2)
+fatorial = fix (\f x -> if x == 0 then 1 else x * f (x-1))
 
-mdc = \x y-> last (mdc2 x y)
-mdc2 = \x y -> if mod x y <= 0 then []
-                else [mod x y] ++ mdc2 y (mod x y)
+isPrime = \x -> if x == 1 then True
+  else length (filter (\y -> mod x y ==0) [2.. floor(sqrt (fromIntegral x))] ) == 0
 
-mmc = \x y -> if x==0 || y==0 then 0
-                else if x == y then x
-                  else div (x*y) (mdc x y)
+fib = fix (\f x -> if x == 1 then 1 else if x == 2 then 1 else f (x-1) + f (x-2))
 
-coprimo x y = undefined
-goldbach x = undefined
+mdc = fix (\f x y -> if y == 0 then x else f y (x `mod` y))
+
+mmc = \x y -> (x * y) `div` (mdc x y)
+
+coprimo = \x y -> if (mdc x y) == 1 then True else False
+
+goldbach = \x -> do
+  let primos = filter isPrime [1..(x-1)]
+  if x > 2 then [ (a, b) | a <- primos, b <- primos, a + b == x]
+  else undefined
 
 --Implemente as funções sobre listas escritas previsamente usando expressões lambda
 --consulte suas implementacoes anteriores para a documentacao dessas funcoes
