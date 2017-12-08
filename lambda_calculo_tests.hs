@@ -1,3 +1,5 @@
+import Data.Function
+
 --Exemplos de expressoes lambda
 square = \x -> x*x
 
