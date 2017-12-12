@@ -1,11 +1,6 @@
+import Lambda_calculus
 import Data.Function
 import Test.QuickCheck
-import lambda_calculus
---Exemplos de expressoes lambda
-square = \x -> x*x
-
---Implemente as funções anteriormente escritas usando expressões lambda
---consulte suas implementacoes anteriores para a documentacao dessas funcoes
 
 {- TESTES QC -}
 

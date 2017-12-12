@@ -1,3 +1,4 @@
+module Lambda_calculus where
 import Data.Function
 
 --Exemplos de expressoes lambda
