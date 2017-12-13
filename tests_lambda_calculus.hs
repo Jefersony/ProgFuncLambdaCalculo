@@ -1,24 +1,39 @@
 import Lambda_calculus
 import Data.Function
-import Test.QuickCheck
+import Test.HUnit
 
-{- TESTES QC -}
 
-prop_pow :: Int -> Int -> Property
-prop_pow x y = not (y <= 0) ==> exponenciation x y
-  where
-  exponenciation x 0 = 1 == pow x 0
-  exponenciation 0 y = 0 == pow 0 y
-  exponenciation x y = product(replicate y x) == pow x y
+testPow01 = TestCase (assertEqual "testPow01" 1 (pow 0 0))
+testPow02 = TestCase (assertEqual "testPow02" 1 (pow 1 0))
+testPow03 = TestCase (assertEqual "testPow03" 0 (pow 0 1))
+testPow04 = TestCase (assertEqual "testPow04" 0 (pow 0 2))
+testPow05 = TestCase (assertEqual "testPow05" 5 (pow 5 1))
+testPow06 = TestCase (assertEqual "testPow06" 9 (pow 3 2))
 
-prop_fatorial :: Int -> Property
-prop_fatorial x = not (x <= 0) ==> fatorial' x
-  where
-  fatorial' x = (product [1..x]) == fatorial x
+testsPow = TestList [testPow01, testPow02, testPow03, testPow04, testPow05, testPow06]
 
-prop_isPrime_model :: Int -> Bool
-prop_isPrime_model x = myIsPrime x == isPrime x
-  where
-  myIsPrime x = if x <= 0 then False
-    else if x == 1 then True
-    else length (filter (\y -> mod x y == 0) [2.. floor(sqrt (fromIntegral x))] ) == 0
+testsFatorial = TestList []
+testsIsPrime = TestList []
+testsFib = TestList []
+testsMdc = TestList []
+testsCoprimo = TestList []
+testsGoldbach = TestList []
+testsMeuLast = TestList []
+testsPenultimo = TestList []
+testsElementat = TestList []
+testsMeuLength = TestList []
+testsMeuReverso = TestList []
+testsIsPalindrome = TestList []
+testsCompress = TestList []
+testsCompact = TestList []
+testsEncode = TestList []
+testsSplit = TestList []
+testsSlice = TestList []
+testsInsertAt = TestList []
+testsSort = TestList []
+testsMySum = TestList []
+
+tests = TestList [testsPow, testsFatorial, testsIsPrime, testsFib, testsMdc,
+  testsCoprimo, testsGoldbach, testsMeuLast, testsPenultimo, testsElementat,
+  testsMeuLength, testsMeuReverso, testsIsPalindrome, testsCompress, testsCompact,
+  testsEncode, testsSplit, testsSlice, testsInsertAt, testsSort, testsMySum]
