@@ -1,4 +1,4 @@
-module Lambda_calculus where
+module LambdaCalculus where
 import Data.Function
 
 --Exemplos de expressoes lambda
@@ -25,8 +25,8 @@ isPrime = \x -> if x <= 0 then False
   else length (filter (\y -> mod x y == 0) [2.. floor(sqrt (fromIntegral x))] ) == 0
 
 fib :: Int -> Integer
-fib = fix (\f x -> if x == 1 then 1
-  else if x == 2 then 1
+fib = fix (\f x -> if x == 0 then 0
+  else if x == 1 then 1
   else f (x-1) + f (x-2))
 
 mdc :: Int -> Int -> Int
