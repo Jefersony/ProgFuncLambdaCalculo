@@ -1,6 +1,10 @@
 module TestsLambdaCalculus where
 import LambdaCalculus
 import Data.Function
+import Data.Aeson
+import Data.Text
+import Data.Text.Lazy.IO as I
+import qualified Data.ByteString.Lazy.Char8 as B
 import Test.HUnit
 
 testPow01 = TestCase (assertEqual "testPow01" 1 (pow 0 0) )
@@ -107,3 +111,21 @@ tests = TestList [testsPow, testsFatorial, testsIsPrime, testsFib, testsMdc,
   testsCoprimo, testsGoldbach, testsMeuLast, testsPenultimo, testsElementat,
   testsMeuLength, testsMeuReverso, testsIsPalindrome, testsCompress, testsCompact,
   testsEncode, testsSplit, testsSlice, testsInsertAt, testsSort, testsMySum]
+
+reportMsg :: String -> Bool -> Int -> IO Int
+reportMsg message isProgress count = do
+  return (count+1)
+
+myPutText = PutText reportMsg 0  :: PutText Int
+
+instance ToJSON Counts where
+  toJSON (Counts cases tried errors failures) = object
+    [ pack "totalTestes" .= show tried
+    , pack "erros" .= show errors
+    , pack "falhas" .= show failures
+    , pack "passaram" .= show (tried - errors - failures)
+    ]
+
+main = do
+  (testCounts, msgCount) <- runTestText myPutText tests
+  B.putStrLn $ encode testCounts

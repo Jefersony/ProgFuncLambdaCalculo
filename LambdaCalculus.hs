@@ -83,9 +83,6 @@ compact = fix(\f xs -> if null xs then []
   else if ((head xs) `elem` (tail xs)) then [head xs] ++ (filter (== (head xs)) (tail xs)) ++ compact (filter (/= (head xs)) (tail xs))
   else [head xs] ++ f (tail xs) )
 
-encode :: (Eq a) => [a] -> [(a, Int)]
-encode xs = undefined
-
 split :: Int -> [a] -> [[a]]
 split = \i xs -> [take i xs] ++ [drop i xs]
 
