@@ -102,12 +102,38 @@ testGoldbach06 = TestCase ( assertEqual "testGoldbach06" False (elem (96, 4) (go
 testsGoldbach = TestList [testGoldbach01, testGoldbach02, testGoldbach03, testGoldbach04,
   testGoldbach05, testGoldbach06]
 
+testMeuLast01 = TestCase ( assertEqual "testMeuLast01" 1 (meuLast [1]) )
+testMeuLast02 = TestCase ( assertEqual "testMeuLast02" 3 (meuLast [1,2,2,3]) )
+testMeuLast03 = TestCase ( assertEqual "testMeuLast03" 200 (meuLast [1..200]) )
+-- testMeuLast04 = TestCase ( assertEqual "testMeuLast04" "Empty list" (meuLast []) )
 
-testsMeuLast = TestList []
-testsPenultimo = TestList []
-testsElementat = TestList []
-testsMeuLength = TestList []
-testsMeuReverso = TestList []
+testsMeuLast = TestList [testMeuLast01, testMeuLast02, testMeuLast03 {-, testMeuLast04-}]
+
+testPenultimo01 = TestCase ( assertEqual "testPenultimo01" 1 (penultimo [1,2]) )
+testPenultimo02 = TestCase ( assertEqual "testPenultimo02" 5 (penultimo [1,2,3,4,5,6]) )
+testPenultimo03 = TestCase ( assertEqual "testPenultimo03" 99 (penultimo [1,3..101]) )
+
+testsPenultimo = TestList [ testPenultimo01, testPenultimo02, testPenultimo03]
+
+testElementAt01 = TestCase ( assertEqual "testElementAt01" 9 (elementAt 9 [1..10]))
+testElementAt02 = TestCase ( assertEqual "testElementAt02" 1 (elementAt 1 [1..10]))
+testElementAt03 = TestCase ( assertEqual "testElementAt03" 10 (elementAt 10 [1..20]))
+
+testsElementat = TestList [ testElementAt03, testElementAt02, testElementAt01]
+
+testMeuLength01 = TestCase ( assertEqual "testMeuLength01" 5 (meuLength [1,2,3,4,5]))
+testMeuLength02 = TestCase ( assertEqual "testMeuLength02" 50 (meuLength [1..50]))
+testMeuLength03 = TestCase ( assertEqual "testMeuLength03" 25 (meuLength [1,3..50]))
+
+testsMeuLength = TestList [ testMeuLength01, testMeuLength02, testMeuLength03]
+
+testMeuReverso01 = TestCase ( assertEqual "testMeuReverso01" [3,2,1] (meuReverso [1,2,3])) 
+testMeuReverso02 = TestCase ( assertEqual "testMeuReverso02" [1,2,3] (meuReverso [3,2,1])) 
+testMeuReverso03 = TestCase ( assertEqual "testMeuReverso03" [50,49..0] (meuReverso [0,1..50])) 
+testMeuReverso04 = TestCase ( assertEqual "testMeuReverso04" [7] (meuReverso [7])) 
+
+testsMeuReverso = TestList [ testMeuReverso01, testMeuReverso02, testMeuReverso03, testMeuReverso04 ]
+
 testsIsPalindrome = TestList []
 testsCompress = TestList []
 testsCompact = TestList []
