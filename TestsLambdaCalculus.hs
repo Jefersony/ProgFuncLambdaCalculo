@@ -1,11 +1,11 @@
 module TestsLambdaCalculus where
 import LambdaCalculus
 import Data.Function
-import Data.Aeson
+{-import Data.Aeson
 import Data.Text
 import Data.Text.Lazy.IO as I
 import qualified Data.ByteString.Lazy.Char8 as B
-import Data.Aeson.Text (encodeToLazyText)
+import Data.Aeson.Text (encodeToLazyText) -}
 import Test.HUnit
 
 testPow01 = TestCase (assertEqual "testPow01" 1 (pow 0 0) )
@@ -92,7 +92,17 @@ testsCoprimo = TestList [testCoprimo01, testCoprimo02, testCoprimo03,testCoprimo
   testCoprimo05,testCoprimo06, testCoprimo07, testCoprimo08, testCoprimo09,
   testCoprimo10, testCoprimo11, testCoprimo12, testCoprimo13, testCoprimo14]
 
-testsGoldbach = TestList []
+testGoldbach01 = TestCase ( assertEqual "testGoldbach01" False (elem (5, 24) (goldbach 28)))
+testGoldbach02 = TestCase ( assertEqual "testGoldbach02" True (elem (5, 23) (goldbach 28)))
+testGoldbach03 = TestCase ( assertEqual "testGoldbach03" True (elem (3, 7) (goldbach 10)))
+testGoldbach04 = TestCase ( assertEqual "testGoldbach04" True (elem (1, 3) (goldbach 4)))
+testGoldbach05 = TestCase ( assertEqual "testGoldbach05" True (elem (97, 3) (goldbach 100)))
+testGoldbach06 = TestCase ( assertEqual "testGoldbach06" False (elem (96, 4) (goldbach 100)))
+
+testsGoldbach = TestList [testGoldbach01, testGoldbach02, testGoldbach03, testGoldbach04,
+  testGoldbach05, testGoldbach06]
+
+
 testsMeuLast = TestList []
 testsPenultimo = TestList []
 testsElementat = TestList []
@@ -112,7 +122,7 @@ tests = TestList [testsPow, testsFatorial, testsIsPrime, testsFib, testsMdc,
   testsCoprimo, testsGoldbach, testsMeuLast, testsPenultimo, testsElementat,
   testsMeuLength, testsMeuReverso, testsIsPalindrome, testsCompress, testsCompact,
   testsEncode, testsSplit, testsSlice, testsInsertAt, testsSort, testsMySum]
-
+{-
 reportMsg :: String -> Bool -> Int -> IO Int
 reportMsg message isProgress count = do
   return (count+1)
@@ -135,3 +145,4 @@ main = do
   I.writeFile "test-output.json" (encodeToLazyText testCounts)
   Prelude.putStrLn "Arquivo json criado"
   return ()
+-}
