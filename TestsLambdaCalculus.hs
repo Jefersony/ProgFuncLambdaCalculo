@@ -134,15 +134,62 @@ testMeuReverso04 = TestCase ( assertEqual "testMeuReverso04" [7] (meuReverso [7]
 
 testsMeuReverso = TestList [ testMeuReverso01, testMeuReverso02, testMeuReverso03, testMeuReverso04 ]
 
-testsIsPalindrome = TestList []
-testsCompress = TestList []
-testsCompact = TestList []
+testIsPalindrome01 = TestCase (assertEqual "testIsPalindrome01" True (isPalindrome "asa"))
+testIsPalindrome02 = TestCase (assertEqual "testIsPalindrome02" True (isPalindrome [1,0,1]))
+testIsPalindrome03 = TestCase (assertEqual "testIsPalindrome03" False (isPalindrome "casa"))
+
+testsIsPalindrome = TestList [ testIsPalindrome01, testIsPalindrome02, testIsPalindrome03]
+
+testCompress01 = TestCase ( assertEqual "testCompress01" [2,5,8,1] (compress [2,5,8,2,1,8]))
+testCompress02 = TestCase ( assertEqual "testCompress02" [2,5,1,8] (compress [2,5,2,1,8,8]))
+testCompress03 = TestCase ( assertEqual "testCompress03" [6] (compress [6,6,6]))
+testCompress04 = TestCase ( assertEqual "testCompress04" [1,5..300] (compress [1,5..300]))
+
+testsCompress = TestList [ testCompress01, testCompress02, testCompress03, testCompress04]
+
+testCompact01 = TestCase ( assertEqual "testCompact01" [2,2,5,8,8,1] (compact [2,5,8,2,1,8]))
+testCompact02 = TestCase ( assertEqual "testCompact02" [2] (compact [2]))
+testCompact03 = TestCase ( assertEqual "testCompact03" [0,0,0,0,1,1,1,1] (compact  [0,1,0,1,0,1,0,1]))
+--testCompact04 = TestCase ( assertEqual "testCompact04" [] (compact []))
+testCompact05 = TestCase ( assertEqual "testCompact05" [1..50] (compact [1..50]))
+
+testsCompact = TestList [ testCompact01,testCompact02,testCompact03,testCompact05]
+
+{- Falta implementar a func encode -}
 testsEncode = TestList []
-testsSplit = TestList []
-testsSlice = TestList []
-testsInsertAt = TestList []
+
+testSplit01 = TestCase ( assertEqual "testSplit01" [[0], [9,9,9,9,9]] (split 1 [0,9,9,9,9,9]))
+testSplit02 = TestCase ( assertEqual "testSplit02" [[], [0,9,9,9,9,9]] (split 0 [0,9,9,9,9,9]))
+testSplit03 = TestCase ( assertEqual "testSplit03" [[0,0,0], [9,9,9,9,9]] (split 3 [0,0,0,9,9,9,9,9]))
+testSplit04 = TestCase ( assertEqual "testSplit04" [[1], []] (split 1 [1]))
+testSplit05 = TestCase ( assertEqual "testSplit05" [[], [1]] (split 0 [1]))
+
+testsSplit = TestList [ testSplit01, testSplit02, testSplit03, testSplit04, testSplit05 ]
+
+testSlice01 = TestCase ( assertEqual "testSlice01" [1,2,3,4,5,6,7,8,9] (slice [1,2,3,4,5,6,7,8,9] 1 9))
+testSlice02 = TestCase ( assertEqual "testSlice02" [2,3,4,5,6,7,8,9] (slice [1,2,3,4,5,6,7,8,9] 2 9))
+testSlice03 = TestCase ( assertEqual "testSlice03" [1,2,3,4,5,6,7,8] (slice [1,2,3,4,5,6,7,8,9] 1 8))
+testSlice04 = TestCase ( assertEqual "testSlice04" [3,4,5,6] (slice [1,2,3,4,5,6,7,8,9] 3 6))
+testSlice05 = TestCase ( assertEqual "testSlice05" [1] (slice [1] 1 1))
+testSlice06 = TestCase ( assertEqual "testSlice06" [] (slice [1,2,3,4,5,6,7,8,9] 1 0))
+
+testsSlice = TestList [testSlice01, testSlice02, testSlice03, testSlice04, testSlice05, testSlice06]
+
+testInsertAt01 = TestCase ( assertEqual "testInsertAt01" [5,0,0,0,0] (insertAt 5 1 [0,0,0,0]))
+testInsertAt02 = TestCase ( assertEqual "testInsertAt02" [0,0,0,0,5] (insertAt 5 5 [0,0,0,0]))
+testInsertAt03 = TestCase ( assertEqual "testInsertAt03" [0,0,0,5,0] (insertAt 5 4 [0,0,0,0]))
+testInsertAt04 = TestCase ( assertEqual "testInsertAt04" [5] (insertAt 5 1 []))
+
+testsInsertAt = TestList [testInsertAt01, testInsertAt02, testInsertAt03, testInsertAt04]
+
+{- falta implementar func sort -}
 testsSort = TestList []
-testsMySum = TestList []
+
+testMySum01 = TestCase (assertEqual "testMySum01" 25 (mySum [5,5,5,5,5]))
+testMySum02 = TestCase (assertEqual "testMySum02" 5 (mySum [5]))
+testMySum03 = TestCase (assertEqual "testMySum03" 0 (mySum []))
+
+testsMySum = TestList [testMySum01, testMySum02, testMySum03]
 
 tests = TestList [testsPow, testsFatorial, testsIsPrime, testsFib, testsMdc,
   testsCoprimo, testsGoldbach, testsMeuLast, testsPenultimo, testsElementat,
