@@ -1,11 +1,11 @@
 module TestsLambdaCalculus where
 import LambdaCalculus
 import Data.Function
-{-import Data.Aeson
+import Data.Aeson
 import Data.Text
 import Data.Text.Lazy.IO as I
 import qualified Data.ByteString.Lazy.Char8 as B
-import Data.Aeson.Text (encodeToLazyText) -}
+import Data.Aeson.Text (encodeToLazyText)
 import Test.HUnit
 
 testPow01 = TestCase (assertEqual "testPow01" 1 (pow 0 0) )
@@ -127,10 +127,10 @@ testMeuLength03 = TestCase ( assertEqual "testMeuLength03" 25 (meuLength [1,3..5
 
 testsMeuLength = TestList [ testMeuLength01, testMeuLength02, testMeuLength03]
 
-testMeuReverso01 = TestCase ( assertEqual "testMeuReverso01" [3,2,1] (meuReverso [1,2,3])) 
-testMeuReverso02 = TestCase ( assertEqual "testMeuReverso02" [1,2,3] (meuReverso [3,2,1])) 
-testMeuReverso03 = TestCase ( assertEqual "testMeuReverso03" [50,49..0] (meuReverso [0,1..50])) 
-testMeuReverso04 = TestCase ( assertEqual "testMeuReverso04" [7] (meuReverso [7])) 
+testMeuReverso01 = TestCase ( assertEqual "testMeuReverso01" [3,2,1] (meuReverso [1,2,3]))
+testMeuReverso02 = TestCase ( assertEqual "testMeuReverso02" [1,2,3] (meuReverso [3,2,1]))
+testMeuReverso03 = TestCase ( assertEqual "testMeuReverso03" [50,49..0] (meuReverso [0,1..50]))
+testMeuReverso04 = TestCase ( assertEqual "testMeuReverso04" [7] (meuReverso [7]))
 
 testsMeuReverso = TestList [ testMeuReverso01, testMeuReverso02, testMeuReverso03, testMeuReverso04 ]
 
@@ -158,11 +158,11 @@ testsCompact = TestList [ testCompact01,testCompact02,testCompact03,testCompact0
 {- Falta implementar a func encode -}
 testsEncode = TestList []
 
-testSplit01 = TestCase ( assertEqual "testSplit01" [[0], [9,9,9,9,9]] (split 1 [0,9,9,9,9,9]))
-testSplit02 = TestCase ( assertEqual "testSplit02" [[], [0,9,9,9,9,9]] (split 0 [0,9,9,9,9,9]))
-testSplit03 = TestCase ( assertEqual "testSplit03" [[0,0,0], [9,9,9,9,9]] (split 3 [0,0,0,9,9,9,9,9]))
-testSplit04 = TestCase ( assertEqual "testSplit04" [[1], []] (split 1 [1]))
-testSplit05 = TestCase ( assertEqual "testSplit05" [[], [1]] (split 0 [1]))
+testSplit01 = TestCase ( assertEqual "testSplit01" [[0], [9,9,9,9,9]] (LambdaCalculus.split 1 [0,9,9,9,9,9]))
+testSplit02 = TestCase ( assertEqual "testSplit02" [[], [0,9,9,9,9,9]] (LambdaCalculus.split 0 [0,9,9,9,9,9]))
+testSplit03 = TestCase ( assertEqual "testSplit03" [[0,0,0], [9,9,9,9,9]] (LambdaCalculus.split 3 [0,0,0,9,9,9,9,9]))
+testSplit04 = TestCase ( assertEqual "testSplit04" [[1], []] (LambdaCalculus.split 1 [1]))
+testSplit05 = TestCase ( assertEqual "testSplit05" [[], [1]] (LambdaCalculus.split 0 [1]))
 
 testsSplit = TestList [ testSplit01, testSplit02, testSplit03, testSplit04, testSplit05 ]
 
@@ -195,7 +195,7 @@ tests = TestList [testsPow, testsFatorial, testsIsPrime, testsFib, testsMdc,
   testsCoprimo, testsGoldbach, testsMeuLast, testsPenultimo, testsElementat,
   testsMeuLength, testsMeuReverso, testsIsPalindrome, testsCompress, testsCompact,
   testsEncode, testsSplit, testsSlice, testsInsertAt, testsSort, testsMySum]
-{-
+
 reportMsg :: String -> Bool -> Int -> IO Int
 reportMsg message isProgress count = do
   return (count+1)
@@ -218,4 +218,3 @@ main = do
   I.writeFile "test-output.json" (encodeToLazyText testCounts)
   Prelude.putStrLn "Arquivo json criado"
   return ()
--}
