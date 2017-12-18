@@ -96,15 +96,18 @@ testsCoprimo = TestList [testCoprimo01, testCoprimo02, testCoprimo03,testCoprimo
   testCoprimo05,testCoprimo06, testCoprimo07, testCoprimo08, testCoprimo09,
   testCoprimo10, testCoprimo11, testCoprimo12, testCoprimo13, testCoprimo14]
 
-testGoldbach01 = TestCase ( assertEqual "testGoldbach01" False (elem (5, 24) (goldbach 28)))
-testGoldbach02 = TestCase ( assertEqual "testGoldbach02" True (elem (5, 23) (goldbach 28)))
-testGoldbach03 = TestCase ( assertEqual "testGoldbach03" True (elem (3, 7) (goldbach 10)))
-testGoldbach04 = TestCase ( assertEqual "testGoldbach04" True (elem (1, 3) (goldbach 4)))
-testGoldbach05 = TestCase ( assertEqual "testGoldbach05" True (elem (97, 3) (goldbach 100)))
-testGoldbach06 = TestCase ( assertEqual "testGoldbach06" False (elem (96, 4) (goldbach 100)))
+testGoldbach01 = TestCase ( assertEqual "testGoldbach01: goldbach de 3 tem (1,2)" True (elem (1, 2) (goldbach 3)))
+testGoldbach02 = TestCase ( assertEqual "testGoldbach02: goldbach de 3 não tem (0,3)" False (elem (0, 3) (goldbach 3)))
+testGoldbach03 = TestCase ( assertEqual "testGoldbach03: goldbach de 4 tem (2,2)" True (elem (2, 2) (goldbach 4)))
+testGoldbach04 = TestCase ( assertEqual "testGoldbach04: goldbach de 4 tem (1,3)" True (elem (1, 3) (goldbach 4)))
+testGoldbach05 = TestCase ( assertEqual "testGoldbach05: goldbach de 28 não tem (5,24)" False (elem (5, 24) (goldbach 28)))
+testGoldbach06 = TestCase ( assertEqual "testGoldbach06: goldbach de 28 tem (5,23)" True (elem (5, 23) (goldbach 28)))
+testGoldbach07 = TestCase ( assertEqual "testGoldbach07: goldbach de 10 tem (3,7)" True (elem (3, 7) (goldbach 10)))
+testGoldbach08 = TestCase ( assertEqual "testGoldbach08: goldbach de 100 tem (97,3)" True (elem (97, 3) (goldbach 100)))
+testGoldbach09 = TestCase ( assertEqual "testGoldbach09: goldbach de 100 não tem (96,4)" False (elem (96, 4) (goldbach 100)))
 
 testsGoldbach = TestList [testGoldbach01, testGoldbach02, testGoldbach03, testGoldbach04,
-  testGoldbach05, testGoldbach06]
+  testGoldbach05, testGoldbach06, testGoldbach07, testGoldbach08, testGoldbach09 ]
 
 testMeuLast01 = TestCase ( assertEqual "last de lista com um elemento" 1 (meuLast [1]) )
 testMeuLast02 = TestCase ( assertEqual "last de lista com dois elementos" 2 (meuLast [1,2]) )
@@ -118,11 +121,12 @@ testPenultimo03 = TestCase ( assertEqual "testPenultimo03: penultimo de lista co
 
 testsPenultimo = TestList [ testPenultimo01, testPenultimo02, testPenultimo03 ]
 
-testElementAt01 = TestCase ( assertEqual "testElementAt01" 9 (elementAt 9 [1..10]))
-testElementAt02 = TestCase ( assertEqual "testElementAt02" 1 (elementAt 1 [1..10]))
-testElementAt03 = TestCase ( assertEqual "testElementAt03" 10 (elementAt 10 [1..20]))
+testElementAt01 = TestCase ( assertEqual "testElementAt01: elemento na pos 1 de uma lista com tamanho 1" 1 (elementAt 1 [1]))
+testElementAt02 = TestCase ( assertEqual "testElementAt02: elemento pos 1 de uma lista de tamanho n" 1 (elementAt 1 [1..10]))
+testElementAt03 = TestCase ( assertEqual "testElementAt01: elemento na pos 10 de uma lista de tamanho 10" 10 (elementAt 10 [1..10]))
+testElementAt04 = TestCase ( assertEqual "testElementAt03: elemento posicionado no meio da lista" 10 (elementAt 10 [1..20]))
 
-testsElementat = TestList [ testElementAt01, testElementAt02, testElementAt03 ]
+testsElementAt = TestList [ testElementAt01, testElementAt02, testElementAt03, testElementAt04 ]
 
 testMeuLength01 = TestCase ( assertEqual "testMeuLength01: lista vazia" 0 (meuLength []) )
 testMeuLength02 = TestCase ( assertEqual "testMeuLength02: lista com um elemento" 1 (meuLength [1]) )
@@ -138,50 +142,62 @@ testMeuReverso03 = TestCase ( assertEqual "testMeuReverso03: lista de inteiros" 
 testMeuReverso04 = TestCase ( assertEqual "testMeuReverso04: lista de booleanos" [True,True,False] (meuReverso [False,True,True]))
 testMeuReverso05 = TestCase ( assertEqual "testMeuReverso05: lista com muitos elementos" [50,49..0] (meuReverso [0,1..50]))
 
-testsMeuReverso = TestList [ testMeuReverso01, testMeuReverso02, testMeuReverso03, testMeuReverso04 ]
+testsMeuReverso = TestList [ testMeuReverso01, testMeuReverso02, testMeuReverso03, testMeuReverso04, testMeuReverso05 ]
 
-testIsPalindrome01 = TestCase (assertEqual "testIsPalindrome01" True (isPalindrome "asa"))
-testIsPalindrome02 = TestCase (assertEqual "testIsPalindrome02" True (isPalindrome [1,0,1]))
-testIsPalindrome03 = TestCase (assertEqual "testIsPalindrome03" False (isPalindrome "casa"))
-testIsPalindrome04 = TestCase (assertEqual "testIsPalindrome03" True (isPalindrome ""))
+testIsPalindrome01 = TestCase (assertEqual "testIsPalindrome01: for isPalindrome asa " True (isPalindrome "asa"))
+testIsPalindrome02 = TestCase (assertEqual "testIsPalindrome02: for isPalindrome [1,0,1]" True (isPalindrome [1,0,1]))
+testIsPalindrome03 = TestCase (assertEqual "testIsPalindrome03: for isPalindrome casa " False (isPalindrome "casa"))
+testIsPalindrome04 = TestCase (assertEqual "testIsPalindrome04: for isPalindrome " True (isPalindrome "") )
 
-testsIsPalindrome = TestList [ testIsPalindrome01, testIsPalindrome02, testIsPalindrome03 ]
+testsIsPalindrome = TestList [ testIsPalindrome01, testIsPalindrome02, testIsPalindrome03,testIsPalindrome04 ]
 
-testCompress01 = TestCase ( assertEqual "testCompress01" [2,5,8,1] (compress [2,5,8,2,1,8]))
-testCompress02 = TestCase ( assertEqual "testCompress02" [2,5,1,8] (compress [2,5,2,1,8,8]))
-testCompress03 = TestCase ( assertEqual "testCompress03" [6] (compress [6,6,6]))
-testCompress04 = TestCase ( assertEqual "testCompress04" [1,5..300] (compress [1,5..300]))
+testCompress01 = TestCase ( assertEqual "testCompress01: for compress []" [] (compress ([] :: [Int])) )
+testCompress02 = TestCase ( assertEqual "testCompress02: for compress [1]" [1] (compress [1]) )
+testCompress03 = TestCase ( assertEqual "testCompress03: for compress [6,6,6]" [6] (compress [6,6,6]) )
+testCompress04 = TestCase ( assertEqual "testCompress04: for compress [2,5,8,2,1,8]" [2,5,8,1] (compress [2,5,8,2,1,8]) )
+testCompress05 = TestCase ( assertEqual "testCompress05: for compress [2,5,2,1,8,8]" [2,5,1,8] (compress [2,5,2,1,8,8]) )
+testCompress06 = TestCase ( assertEqual "testCompress06: for compress [1,5..300]" [1,5..300] (compress [1,5..300]) )
+testCompress07 = TestCase ( assertEqual "testCompress07: for compress alakazan" "alkzn" (compress "alakazan") )
 
-testsCompress = TestList [ testCompress01, testCompress02, testCompress03, testCompress04 ]
 
-testCompact01 = TestCase ( assertEqual "testCompact01" [2,2,5,8,8,1] (compact [2,5,8,2,1,8]))
-testCompact02 = TestCase ( assertEqual "testCompact02" [2] (compact [2]))
-testCompact03 = TestCase ( assertEqual "testCompact03" [0,0,0,0,1,1,1,1] (compact  [0,1,0,1,0,1,0,1]))
-testCompact04 = TestCase ( assertEqual "testCompact05" [1..50] (compact [1..50]))
+testsCompress = TestList [ testCompress01, testCompress02, testCompress03, testCompress04,
+  testCompress05, testCompress06, testCompress07 ]
 
-testsCompact = TestList [ testCompact01,testCompact02,testCompact03,testCompact04 ]
+testCompact01 = TestCase ( assertEqual "testCompact01: for compact []" [] (compact ([] :: [Int]) ) )
+testCompact02 = TestCase ( assertEqual "testCompact02: for compact [2]" [2] (compact [2]) )
+testCompact03 = TestCase ( assertEqual "testCompact03: for compact [2,5,8,2,1,8]" [2,2,5,8,8,1] (compact [2,5,8,2,1,8]) )
+testCompact04 = TestCase ( assertEqual "testCompact04: for compact [0,1,0,1,0,1,0,1]" [0,0,0,0,1,1,1,1] (compact  [0,1,0,1,0,1,0,1]) )
+testCompact05 = TestCase ( assertEqual "testCompact05: for compact [1..50]" [1..50] (compact [1..50]) )
 
-testEncode01 = TestCase ( assertEqual "testEncode01" [] (LambdaCalculus.encode ([] :: [Int]) ) )
-testEncode02 = TestCase ( assertEqual "testEncode02" [(1,1)] (LambdaCalculus.encode [1]) )
-testEncode03 = TestCase ( assertEqual "testEncode03" [(1,1), (2,1)] (LambdaCalculus.encode [1,2]) )
-testEncode04 = TestCase ( assertEqual "testEncode04" [(1,2), (2,2), (0,1), (3,1)] (LambdaCalculus.encode [1,2,0,3,2,1]) )
+testsCompact = TestList [ testCompact01, testCompact02, testCompact03, testCompact04, testCompact05 ]
 
-testsEncode = TestList [ testEncode01, testEncode02, testEncode03, testEncode04 ]
+testEncode01 = TestCase ( assertEqual "testEncode01: for encode []"
+  [] (LambdaCalculus.encode ([] :: [Int]) ) )
+testEncode02 = TestCase ( assertEqual "testEncode02: for encode [1]"
+  [(1,1)] (LambdaCalculus.encode [1]) )
+testEncode03 = TestCase ( assertEqual "testEncode03: for encode [1,2]"
+  [(1,1), (2,1)] (LambdaCalculus.encode [1,2]) )
+testEncode04 = TestCase ( assertEqual "testEncode04: for encode [1,2,0,3,2,1]"
+  [(1,2), (2,2), (0,1), (3,1)] (LambdaCalculus.encode [1,2,0,3,2,1]) )
+testEncode05 = TestCase ( assertEqual "testEncode04: for encode [1,2,0,3,2,1]"
+  [('a',1), ('n',2), ('d',1), ('e',1), ('r',1), ('s',1), ('o',1)] (LambdaCalculus.encode "anderson") )
 
-testSplit01 = TestCase ( assertEqual "testSplit01" [[0], [9,9,9,9,9]] (LambdaCalculus.split 1 [0,9,9,9,9,9]))
-testSplit02 = TestCase ( assertEqual "testSplit02" [[], [0,9,9,9,9,9]] (LambdaCalculus.split 0 [0,9,9,9,9,9]))
-testSplit03 = TestCase ( assertEqual "testSplit03" [[0,0,0], [9,9,9,9,9]] (LambdaCalculus.split 3 [0,0,0,9,9,9,9,9]))
-testSplit04 = TestCase ( assertEqual "testSplit04" [[1], []] (LambdaCalculus.split 1 [1]))
-testSplit05 = TestCase ( assertEqual "testSplit05" [[], [1]] (LambdaCalculus.split 0 [1]))
+testsEncode = TestList [ testEncode01, testEncode02, testEncode03, testEncode04, testEncode05 ]
+
+testSplit01 = TestCase ( assertEqual "testSplit01" [[0], [9,9,9,9,9]] (LambdaCalculus.split 1 [0,9,9,9,9,9]) )
+testSplit02 = TestCase ( assertEqual "testSplit02" [[], [0,9,9,9,9,9]] (LambdaCalculus.split 0 [0,9,9,9,9,9]) )
+testSplit03 = TestCase ( assertEqual "testSplit03" [[0,0,0], [9,9,9,9,9]] (LambdaCalculus.split 3 [0,0,0,9,9,9,9,9]) )
+testSplit04 = TestCase ( assertEqual "testSplit04" [[1], []] (LambdaCalculus.split 1 [1]) )
+testSplit05 = TestCase ( assertEqual "testSplit05" [[], [1]] (LambdaCalculus.split 0 [1]) )
 
 testsSplit = TestList [ testSplit01, testSplit02, testSplit03, testSplit04, testSplit05 ]
 
-testSlice01 = TestCase ( assertEqual "testSlice01" [1,2,3,4,5,6,7,8,9] (slice [1,2,3,4,5,6,7,8,9] 1 9))
-testSlice02 = TestCase ( assertEqual "testSlice02" [2,3,4,5,6,7,8,9] (slice [1,2,3,4,5,6,7,8,9] 2 9))
-testSlice03 = TestCase ( assertEqual "testSlice03" [1,2,3,4,5,6,7,8] (slice [1,2,3,4,5,6,7,8,9] 1 8))
-testSlice04 = TestCase ( assertEqual "testSlice04" [3,4,5,6] (slice [1,2,3,4,5,6,7,8,9] 3 6))
-testSlice05 = TestCase ( assertEqual "testSlice05" [1] (slice [1] 1 1))
-testSlice06 = TestCase ( assertEqual "testSlice06" [] (slice [1,2,3,4,5,6,7,8,9] 1 0))
+testSlice01 = TestCase ( assertEqual "testSlice01" [1,2,3,4,5,6,7,8,9] (slice [1,2,3,4,5,6,7,8,9] 1 9) )
+testSlice02 = TestCase ( assertEqual "testSlice02" [2,3,4,5,6,7,8,9] (slice [1,2,3,4,5,6,7,8,9] 2 9) )
+testSlice03 = TestCase ( assertEqual "testSlice03" [1,2,3,4,5,6,7,8] (slice [1,2,3,4,5,6,7,8,9] 1 8) )
+testSlice04 = TestCase ( assertEqual "testSlice04" [3,4,5,6] (slice [1,2,3,4,5,6,7,8,9] 3 6) )
+testSlice05 = TestCase ( assertEqual "testSlice05" [1] (slice [1] 1 1) )
+testSlice06 = TestCase ( assertEqual "testSlice06" [] (slice [1,2,3,4,5,6,7,8,9] 1 0) )
 
 testsSlice = TestList [ testSlice01, testSlice02, testSlice03, testSlice04, testSlice05, testSlice06 ]
 
@@ -201,14 +217,14 @@ testSort06 = TestCase ( assertEqual "testSort06: lista com elemento negativo" [(
 
 testsSort = TestList [ testSort01, testSort02, testSort03, testSort04, testSort05, testSort06 ]
 
-testMySum01 = TestCase (assertEqual "testMySum01" 25 (mySum [5,5,5,5,5]))
-testMySum02 = TestCase (assertEqual "testMySum02" 5 (mySum [5]))
-testMySum03 = TestCase (assertEqual "testMySum03" 0 (mySum []))
+testMySum01 = TestCase (assertEqual "testMySum01: for mySum [5,5,5,5,5]" 25 (mySum [5,5,5,5,5]))
+testMySum02 = TestCase (assertEqual "testMySum02: soma de lista com um elemento é o próprio elemento" 5 (mySum [5]))
+testMySum03 = TestCase (assertEqual "testMySum03: soma de lista vazia" 0 (mySum []))
 
 testsMySum = TestList [ testMySum01, testMySum02, testMySum03 ]
 
 tests = TestList [ testsPow, testsFatorial, testsIsPrime, testsFib, testsMdc,
-  testsCoprimo, testsGoldbach, testsMeuLast, testsPenultimo, testsElementat,
+  testsCoprimo, testsGoldbach, testsMeuLast, testsPenultimo, testsElementAt,
   testsMeuLength, testsMeuReverso, testsIsPalindrome, testsCompress, testsCompact,
   testsEncode, testsSplit, testsSlice, testsInsertAt, testsSort, testsMySum ]
 
