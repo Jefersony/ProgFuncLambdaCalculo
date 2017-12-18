@@ -27,7 +27,7 @@ fib = fix (\f x -> if x == 0 then 0
   else f (x-1) + f (x-2))
 
 mdc :: Int -> Int -> Int
-mdc = fix (\f x y -> if y == 0 then x else f y (x `mod` y))
+mdc = fix (\f x y -> if y == 0 then x else f (abs y) ((abs x) `mod` (abs y)) )
 
 mmc :: Int -> Int -> Int
 mmc = \x y -> (x * y) `div` (mdc x y)

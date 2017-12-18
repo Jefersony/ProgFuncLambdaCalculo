@@ -184,29 +184,32 @@ testEncode05 = TestCase ( assertEqual "testEncode04: for encode [1,2,0,3,2,1]"
 
 testsEncode = TestList [ testEncode01, testEncode02, testEncode03, testEncode04, testEncode05 ]
 
-testSplit01 = TestCase ( assertEqual "testSplit01" [[0], [9,9,9,9,9]] (LambdaCalculus.split 1 [0,9,9,9,9,9]) )
-testSplit02 = TestCase ( assertEqual "testSplit02" [[], [0,9,9,9,9,9]] (LambdaCalculus.split 0 [0,9,9,9,9,9]) )
-testSplit03 = TestCase ( assertEqual "testSplit03" [[0,0,0], [9,9,9,9,9]] (LambdaCalculus.split 3 [0,0,0,9,9,9,9,9]) )
-testSplit04 = TestCase ( assertEqual "testSplit04" [[1], []] (LambdaCalculus.split 1 [1]) )
-testSplit05 = TestCase ( assertEqual "testSplit05" [[], [1]] (LambdaCalculus.split 0 [1]) )
+testSplit01 = TestCase ( assertEqual "testSplit01: for split 1 [0,9,9,9,9,9]" [[0], [9,9,9,9,9]] (LambdaCalculus.split 1 [0,9,9,9,9,9]) )
+testSplit02 = TestCase ( assertEqual "testSplit02: for split 0 [0,9,9,9,9,9]" [[], [0,9,9,9,9,9]] (LambdaCalculus.split 0 [0,9,9,9,9,9]) )
+testSplit03 = TestCase ( assertEqual "testSplit03: for split 3 [0,0,0,9,9,9,9,9]" [[0,0,0], [9,9,9,9,9]] (LambdaCalculus.split 3 [0,0,0,9,9,9,9,9]) )
+testSplit04 = TestCase ( assertEqual "testSplit04: for split 1 [1]" [[1], []] (LambdaCalculus.split 1 [1]) )
+testSplit05 = TestCase ( assertEqual "testSplit05: for split 0 [1]" [[], [1]] (LambdaCalculus.split 0 [1]) )
+testSplit06 = TestCase ( assertEqual "testSplit06: for split star wars" ["star", " wars"] (LambdaCalculus.split 4 "star wars") )
 
-testsSplit = TestList [ testSplit01, testSplit02, testSplit03, testSplit04, testSplit05 ]
+testsSplit = TestList [ testSplit01, testSplit02, testSplit03, testSplit04, testSplit05, testSplit06 ]
 
-testSlice01 = TestCase ( assertEqual "testSlice01" [1,2,3,4,5,6,7,8,9] (slice [1,2,3,4,5,6,7,8,9] 1 9) )
-testSlice02 = TestCase ( assertEqual "testSlice02" [2,3,4,5,6,7,8,9] (slice [1,2,3,4,5,6,7,8,9] 2 9) )
-testSlice03 = TestCase ( assertEqual "testSlice03" [1,2,3,4,5,6,7,8] (slice [1,2,3,4,5,6,7,8,9] 1 8) )
-testSlice04 = TestCase ( assertEqual "testSlice04" [3,4,5,6] (slice [1,2,3,4,5,6,7,8,9] 3 6) )
-testSlice05 = TestCase ( assertEqual "testSlice05" [1] (slice [1] 1 1) )
-testSlice06 = TestCase ( assertEqual "testSlice06" [] (slice [1,2,3,4,5,6,7,8,9] 1 0) )
+testSlice01 = TestCase ( assertEqual "testSlice01: for slice [1,2,3,4,5,6,7,8,9] 1 9" [1,2,3,4,5,6,7,8,9] (slice [1,2,3,4,5,6,7,8,9] 1 9) )
+testSlice02 = TestCase ( assertEqual "testSlice02: for slice [1,2,3,4,5,6,7,8,9] 2 9" [2,3,4,5,6,7,8,9] (slice [1,2,3,4,5,6,7,8,9] 2 9) )
+testSlice03 = TestCase ( assertEqual "testSlice03: for slice [1,2,3,4,5,6,7,8,9] 1 8" [1,2,3,4,5,6,7,8] (slice [1,2,3,4,5,6,7,8,9] 1 8) )
+testSlice04 = TestCase ( assertEqual "testSlice04: for slice [1,2,3,4,5,6,7,8,9] 3 6" [3,4,5,6] (slice [1,2,3,4,5,6,7,8,9] 3 6) )
+testSlice05 = TestCase ( assertEqual "testSlice05: for slice [1] 1 1" [1] (slice [1] 1 1) )
+testSlice06 = TestCase ( assertEqual "testSlice06: for slice [1,2,3,4,5,6,7,8,9] 1 0" [] (slice [1,2,3,4,5,6,7,8,9] 1 0) )
+testSlice07 = TestCase ( assertEqual "testSlice07: for slice lambda 1 4" "lamb" (slice "lambda" 1 4) )
 
-testsSlice = TestList [ testSlice01, testSlice02, testSlice03, testSlice04, testSlice05, testSlice06 ]
+testsSlice = TestList [ testSlice01, testSlice02, testSlice03, testSlice04, testSlice05, testSlice06, testSlice07 ]
 
-testInsertAt01 = TestCase ( assertEqual "testInsertAt01" [5,0,0,0,0] (insertAt 5 1 [0,0,0,0]))
-testInsertAt02 = TestCase ( assertEqual "testInsertAt02" [0,0,0,0,5] (insertAt 5 5 [0,0,0,0]))
-testInsertAt03 = TestCase ( assertEqual "testInsertAt03" [0,0,0,5,0] (insertAt 5 4 [0,0,0,0]))
-testInsertAt04 = TestCase ( assertEqual "testInsertAt04" [5] (insertAt 5 1 []))
+testInsertAt01 = TestCase ( assertEqual "testInsertAt01: for insertAt 5 1 [0,0,0,0]" [5,0,0,0,0] (insertAt 5 1 [0,0,0,0]))
+testInsertAt02 = TestCase ( assertEqual "testInsertAt02: for insertAt 5 5 [0,0,0,0]" [0,0,0,0,5] (insertAt 5 5 [0,0,0,0]))
+testInsertAt03 = TestCase ( assertEqual "testInsertAt03: for insertAt 5 4 [0,0,0,0]" [0,0,0,5,0] (insertAt 5 4 [0,0,0,0]))
+testInsertAt04 = TestCase ( assertEqual "testInsertAt04: for insertAt 5 4 [0,0,0,0]" [5] (insertAt 5 1 []))
+testInsertAt05 = TestCase ( assertEqual "testInsertAt05: for insertAt r 3 copo" "corpo" (insertAt 'r' 3 "copo"))
 
-testsInsertAt = TestList [ testInsertAt01, testInsertAt02, testInsertAt03, testInsertAt04 ]
+testsInsertAt = TestList [ testInsertAt01, testInsertAt02, testInsertAt03, testInsertAt04, testInsertAt05 ]
 
 testSort01 = TestCase ( assertEqual "testSort01: lista vazia" [] (sort ([] :: [Int]) ) )
 testSort02 = TestCase ( assertEqual "testSort02: lista com um elemento" [1] (sort [1]) )
