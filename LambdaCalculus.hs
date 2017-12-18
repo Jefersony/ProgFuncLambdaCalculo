@@ -1,11 +1,8 @@
 module LambdaCalculus where
 import Data.Function
 
---Exemplos de expressoes lambda
-square = \x -> x*x
-
---Implemente as funções anteriormente escritas usando expressões lambda
---consulte suas implementacoes anteriores para a documentacao dessas funcoes
+square :: (Num a) => a -> a
+square = \x -> x * x
 
 pow :: Int -> Int -> Int
 pow = fix (\f x y ->
@@ -38,6 +35,7 @@ mmc = \x y -> (x * y) `div` (mdc x y)
 coprimo :: Int -> Int -> Bool
 coprimo = \x y -> if (mdc x y) == 1 then True else False
 
+goldbach :: Int -> [(Int, Int)]
 goldbach = \x -> do
   let primos = filter isPrime [1..(x-1)]
   if x > 2 then [ (a, b) | a <- primos, b <- primos, a + b == x]
@@ -107,7 +105,7 @@ remove = fix (\f e xs -> if e == (head xs) then (tail xs)
 
 sort :: (Ord a) => [a] -> [a]
 sort = fix (\f xs -> if null xs then []
-  else (minimum xs):(f (remove (minimum xs) xs) ) )
+  else (minimum xs) : (f (remove (minimum xs) xs) ) )
 
 mySum :: (Num a) => [a] -> a
 mySum = \xs -> foldr (+) 0 xs
