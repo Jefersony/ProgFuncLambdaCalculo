@@ -106,32 +106,34 @@ testsGoldbach = TestList [testGoldbach01, testGoldbach02, testGoldbach03, testGo
 testMeuLast01 = TestCase ( assertEqual "last de lista com um elemento" 1 (meuLast [1]) )
 testMeuLast02 = TestCase ( assertEqual "last de lista com dois elementos" 2 (meuLast [1,2]) )
 testMeuLast03 = TestCase ( assertEqual "last de lista com n elementos" 200 (meuLast [1..200]) )
--- testMeuLast04 = TestCase ( assertEqual "testMeuLast04" "Empty list" (meuLast []) )
 
-testsMeuLast = TestList [testMeuLast01, testMeuLast02, testMeuLast03 {-, testMeuLast04-}]
+testsMeuLast = TestList [testMeuLast01, testMeuLast02, testMeuLast03 ]
 
 testPenultimo01 = TestCase ( assertEqual "testPenultimo01" 1 (penultimo [1,2]) )
 testPenultimo02 = TestCase ( assertEqual "testPenultimo02" 5 (penultimo [1,2,3,4,5,6]) )
 testPenultimo03 = TestCase ( assertEqual "testPenultimo03" 99 (penultimo [1,3..101]) )
 
-testsPenultimo = TestList [ testPenultimo01, testPenultimo02, testPenultimo03]
+testsPenultimo = TestList [ testPenultimo01, testPenultimo02, testPenultimo03 ]
 
 testElementAt01 = TestCase ( assertEqual "testElementAt01" 9 (elementAt 9 [1..10]))
 testElementAt02 = TestCase ( assertEqual "testElementAt02" 1 (elementAt 1 [1..10]))
 testElementAt03 = TestCase ( assertEqual "testElementAt03" 10 (elementAt 10 [1..20]))
 
-testsElementat = TestList [ testElementAt03, testElementAt02, testElementAt01]
+testsElementat = TestList [ testElementAt01, testElementAt02, testElementAt03 ]
 
-testMeuLength01 = TestCase ( assertEqual "testMeuLength01" 5 (meuLength [1,2,3,4,5]))
-testMeuLength02 = TestCase ( assertEqual "testMeuLength02" 50 (meuLength [1..50]))
-testMeuLength03 = TestCase ( assertEqual "testMeuLength03" 25 (meuLength [1,3..50]))
+testMeuLength01 = TestCase ( assertEqual "testMeuLength01: lista vazia" 0 (meuLength []) )
+testMeuLength02 = TestCase ( assertEqual "testMeuLength02: lista com um elemento" 1 (meuLength [1]) )
+testMeuLength03 = TestCase ( assertEqual "testMeuLength03: lista com 5 elementos" 5 (meuLength [1,2,3,4,5]))
+testMeuLength04 = TestCase ( assertEqual "testMeuLength04: lista com 50 elementos" 50 (meuLength [1..50]))
+testMeuLength05 = TestCase ( assertEqual "testMeuLength05: teste com string" 3 (meuLength "abc") )
 
-testsMeuLength = TestList [ testMeuLength01, testMeuLength02, testMeuLength03]
+testsMeuLength = TestList [ testMeuLength01, testMeuLength02, testMeuLength03, testMeuLength04, testMeuLength05 ]
 
-testMeuReverso01 = TestCase ( assertEqual "testMeuReverso01" [3,2,1] (meuReverso [1,2,3]))
-testMeuReverso02 = TestCase ( assertEqual "testMeuReverso02" [1,2,3] (meuReverso [3,2,1]))
-testMeuReverso03 = TestCase ( assertEqual "testMeuReverso03" [50,49..0] (meuReverso [0,1..50]))
-testMeuReverso04 = TestCase ( assertEqual "testMeuReverso04" [7] (meuReverso [7]))
+testMeuReverso01 = TestCase ( assertEqual "testMeuReverso01: lista vazia" [] ( meuReverso ([] :: [Int]) ) )
+testMeuReverso02 = TestCase ( assertEqual "testMeuReverso02: lista vazia" ['a'] (meuReverso ['a']) )
+testMeuReverso03 = TestCase ( assertEqual "testMeuReverso03: lista de inteiros" [3,2,1] (meuReverso [1,2,3]))
+testMeuReverso04 = TestCase ( assertEqual "testMeuReverso04: lista de booleanos" [True,True,False] (meuReverso [False,True,True]))
+testMeuReverso05 = TestCase ( assertEqual "testMeuReverso05: lista com muitos elementos" [50,49..0] (meuReverso [0,1..50]))
 
 testsMeuReverso = TestList [ testMeuReverso01, testMeuReverso02, testMeuReverso03, testMeuReverso04 ]
 
@@ -140,21 +142,21 @@ testIsPalindrome02 = TestCase (assertEqual "testIsPalindrome02" True (isPalindro
 testIsPalindrome03 = TestCase (assertEqual "testIsPalindrome03" False (isPalindrome "casa"))
 testIsPalindrome04 = TestCase (assertEqual "testIsPalindrome03" True (isPalindrome ""))
 
-testsIsPalindrome = TestList [ testIsPalindrome01, testIsPalindrome02, testIsPalindrome03]
+testsIsPalindrome = TestList [ testIsPalindrome01, testIsPalindrome02, testIsPalindrome03 ]
 
 testCompress01 = TestCase ( assertEqual "testCompress01" [2,5,8,1] (compress [2,5,8,2,1,8]))
 testCompress02 = TestCase ( assertEqual "testCompress02" [2,5,1,8] (compress [2,5,2,1,8,8]))
 testCompress03 = TestCase ( assertEqual "testCompress03" [6] (compress [6,6,6]))
 testCompress04 = TestCase ( assertEqual "testCompress04" [1,5..300] (compress [1,5..300]))
 
-testsCompress = TestList [ testCompress01, testCompress02, testCompress03, testCompress04]
+testsCompress = TestList [ testCompress01, testCompress02, testCompress03, testCompress04 ]
 
 testCompact01 = TestCase ( assertEqual "testCompact01" [2,2,5,8,8,1] (compact [2,5,8,2,1,8]))
 testCompact02 = TestCase ( assertEqual "testCompact02" [2] (compact [2]))
 testCompact03 = TestCase ( assertEqual "testCompact03" [0,0,0,0,1,1,1,1] (compact  [0,1,0,1,0,1,0,1]))
 testCompact05 = TestCase ( assertEqual "testCompact05" [1..50] (compact [1..50]))
 
-testsCompact = TestList [ testCompact01,testCompact02,testCompact03,testCompact05]
+testsCompact = TestList [ testCompact01,testCompact02,testCompact03,testCompact05 ]
 
 testEncode01 = TestCase ( assertEqual "testEncode01" [] (LambdaCalculus.encode ([] :: [Int]) ) )
 testEncode02 = TestCase ( assertEqual "testEncode02" [(1,1)] (LambdaCalculus.encode [1]) )
@@ -178,14 +180,14 @@ testSlice04 = TestCase ( assertEqual "testSlice04" [3,4,5,6] (slice [1,2,3,4,5,6
 testSlice05 = TestCase ( assertEqual "testSlice05" [1] (slice [1] 1 1))
 testSlice06 = TestCase ( assertEqual "testSlice06" [] (slice [1,2,3,4,5,6,7,8,9] 1 0))
 
-testsSlice = TestList [testSlice01, testSlice02, testSlice03, testSlice04, testSlice05, testSlice06]
+testsSlice = TestList [ testSlice01, testSlice02, testSlice03, testSlice04, testSlice05, testSlice06 ]
 
 testInsertAt01 = TestCase ( assertEqual "testInsertAt01" [5,0,0,0,0] (insertAt 5 1 [0,0,0,0]))
 testInsertAt02 = TestCase ( assertEqual "testInsertAt02" [0,0,0,0,5] (insertAt 5 5 [0,0,0,0]))
 testInsertAt03 = TestCase ( assertEqual "testInsertAt03" [0,0,0,5,0] (insertAt 5 4 [0,0,0,0]))
 testInsertAt04 = TestCase ( assertEqual "testInsertAt04" [5] (insertAt 5 1 []))
 
-testsInsertAt = TestList [testInsertAt01, testInsertAt02, testInsertAt03, testInsertAt04]
+testsInsertAt = TestList [ testInsertAt01, testInsertAt02, testInsertAt03, testInsertAt04 ]
 
 {- falta implementar func sort -}
 testsSort = TestList []
@@ -194,12 +196,12 @@ testMySum01 = TestCase (assertEqual "testMySum01" 25 (mySum [5,5,5,5,5]))
 testMySum02 = TestCase (assertEqual "testMySum02" 5 (mySum [5]))
 testMySum03 = TestCase (assertEqual "testMySum03" 0 (mySum []))
 
-testsMySum = TestList [testMySum01, testMySum02, testMySum03]
+testsMySum = TestList [ testMySum01, testMySum02, testMySum03 ]
 
-tests = TestList [testsPow, testsFatorial, testsIsPrime, testsFib, testsMdc,
+tests = TestList [ testsPow, testsFatorial, testsIsPrime, testsFib, testsMdc,
   testsCoprimo, testsGoldbach, testsMeuLast, testsPenultimo, testsElementat,
   testsMeuLength, testsMeuReverso, testsIsPalindrome, testsCompress, testsCompact,
-  testsEncode, testsSplit, testsSlice, testsInsertAt, testsSort, testsMySum]
+  testsEncode, testsSplit, testsSlice, testsInsertAt, testsSort, testsMySum ]
 
 reportMsg :: String -> Bool -> Int -> IO Int
 reportMsg message isProgress count = do
@@ -219,9 +221,11 @@ instance ToJSON Counts where
     , pack "passaram" .= show (tried - errors - failures)
     ]
 
+{- Roda os testes, mostrando o relatório de cada erro (se houver) e
+-}
 main = do
   runTestTT tests
   (testCounts, msgCount) <- runTestText myPutText tests
-  I.writeFile "test-output.json" (encodeToLazyText testCounts)
-  Prelude.putStrLn "Arquivo json criado (test-output.json) "
-  return ()
+  let nomeArquivo = "test-output.json"
+  I.writeFile nomeArquivo (encodeToLazyText testCounts)
+  Prelude.putStrLn ("Arquivo json criado: " ++ nomeArquivo)

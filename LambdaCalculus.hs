@@ -101,7 +101,13 @@ insertAt = fix (\f el pos xs -> if (pos == 1) && (null xs) then [el]
   else if (pos == 1) then [el] ++ xs
   else (head xs) : (f el (pos-1) (tail xs) ) )
 
-sort xs = undefined
+remove :: (Eq a) => a -> [a] -> [a]
+remove = fix (\f e xs -> if e == (head xs) then (tail xs)
+  else (head xs):(f e (tail xs)) )
+
+sort :: (Ord a) => [a] -> [a]
+sort = fix (\f xs -> if null xs then []
+  else (minimum xs):(f (remove (minimum xs) xs) ) )
 
 mySum :: (Num a) => [a] -> a
 mySum = \xs -> foldr (+) 0 xs
