@@ -79,9 +79,14 @@ compress = fix (\f xs -> if null xs then []
   else f (init xs) ++ [x | x <- [last xs], not( x `elem` (init xs) ) ] )
 
 compact :: (Eq a) => [a] -> [a]
-compact = fix(\f xs -> if null xs then []
+compact = fix (\f xs -> if null xs then []
   else if ((head xs) `elem` (tail xs)) then [head xs] ++ (filter (== (head xs)) (tail xs)) ++ compact (filter (/= (head xs)) (tail xs))
   else [head xs] ++ f (tail xs) )
+
+encode :: (Eq a) => [a] -> [(a, Int)]
+encode = fix ( \f xs -> if null xs then []
+  else ( (head xs), length (filter (== (head xs)) (tail xs)) + 1 ) : f (filter (/= (head xs)) (tail xs) )
+  )
 
 split :: Int -> [a] -> [[a]]
 split = \i xs -> [take i xs] ++ [drop i xs]
