@@ -9,6 +9,9 @@ import Data.Aeson.Text (encodeToLazyText)
 import Test.HUnit
 import Control.Exception.Base
 
+{- Múltiplos casos de teste para processar as questões de Lambda Calculus
+-}
+
 testPow01 = TestCase (assertEqual "testPow01: 0 elevado a 0" 1 (pow 0 0) )
 testPow02 = TestCase (assertEqual "testPow02: 1 elevado a 0" 1 (pow 1 0) )
 testPow03 = TestCase (assertEqual "testPow03: 0 elevado a 1" 0 (pow 0 1) )
@@ -109,9 +112,9 @@ testMeuLast03 = TestCase ( assertEqual "last de lista com n elementos" 200 (meuL
 
 testsMeuLast = TestList [testMeuLast01, testMeuLast02, testMeuLast03 ]
 
-testPenultimo01 = TestCase ( assertEqual "testPenultimo01" 1 (penultimo [1,2]) )
-testPenultimo02 = TestCase ( assertEqual "testPenultimo02" 5 (penultimo [1,2,3,4,5,6]) )
-testPenultimo03 = TestCase ( assertEqual "testPenultimo03" 99 (penultimo [1,3..101]) )
+testPenultimo01 = TestCase ( assertEqual "testPenultimo01: penultimo de lista com 2" 1 (penultimo [1,2]) )
+testPenultimo02 = TestCase ( assertEqual "testPenultimo02: for (penultimo [1,2,3,4,5,6])" 5 (penultimo [1,2,3,4,5,6]) )
+testPenultimo03 = TestCase ( assertEqual "testPenultimo03: penultimo de lista com muitos elementos" 99 (penultimo [1,3..101]) )
 
 testsPenultimo = TestList [ testPenultimo01, testPenultimo02, testPenultimo03 ]
 
@@ -154,9 +157,9 @@ testsCompress = TestList [ testCompress01, testCompress02, testCompress03, testC
 testCompact01 = TestCase ( assertEqual "testCompact01" [2,2,5,8,8,1] (compact [2,5,8,2,1,8]))
 testCompact02 = TestCase ( assertEqual "testCompact02" [2] (compact [2]))
 testCompact03 = TestCase ( assertEqual "testCompact03" [0,0,0,0,1,1,1,1] (compact  [0,1,0,1,0,1,0,1]))
-testCompact05 = TestCase ( assertEqual "testCompact05" [1..50] (compact [1..50]))
+testCompact04 = TestCase ( assertEqual "testCompact05" [1..50] (compact [1..50]))
 
-testsCompact = TestList [ testCompact01,testCompact02,testCompact03,testCompact05 ]
+testsCompact = TestList [ testCompact01,testCompact02,testCompact03,testCompact04 ]
 
 testEncode01 = TestCase ( assertEqual "testEncode01" [] (LambdaCalculus.encode ([] :: [Int]) ) )
 testEncode02 = TestCase ( assertEqual "testEncode02" [(1,1)] (LambdaCalculus.encode [1]) )
@@ -189,8 +192,14 @@ testInsertAt04 = TestCase ( assertEqual "testInsertAt04" [5] (insertAt 5 1 []))
 
 testsInsertAt = TestList [ testInsertAt01, testInsertAt02, testInsertAt03, testInsertAt04 ]
 
-{- falta implementar func sort -}
-testsSort = TestList []
+testSort01 = TestCase ( assertEqual "testSort01: lista vazia" [] (sort ([] :: [Int]) ) )
+testSort02 = TestCase ( assertEqual "testSort02: lista com um elemento" [1] (sort [1]) )
+testSort03 = TestCase ( assertEqual "testSort03: lista de elementos iguais" [1,1,1] (sort [1,1,1]) )
+testSort04 = TestCase ( assertEqual "testSort04: lista ordenada" [1,2,3] (sort [1,2,3]) )
+testSort05 = TestCase ( assertEqual "testSort05: for (sort [2,2,1,3,0])" [0,1,2,2,3] (sort [2,2,1,3,0]) )
+testSort06 = TestCase ( assertEqual "testSort06: lista com elemento negativo" [(-2),(-1),0,1,3] (sort [1,(-2),3, 0,(-1)]) )
+
+testsSort = TestList [ testSort01, testSort02, testSort03, testSort04, testSort05, testSort06 ]
 
 testMySum01 = TestCase (assertEqual "testMySum01" 25 (mySum [5,5,5,5,5]))
 testMySum02 = TestCase (assertEqual "testMySum02" 5 (mySum [5]))
@@ -221,7 +230,8 @@ instance ToJSON Counts where
     , pack "passaram" .= show (tried - errors - failures)
     ]
 
-{- Roda os testes, mostrando o relatório de cada erro (se houver) e
+{- Roda os testes, mostrando o relatório de cada erro (se houver). Armazena em
+um arquivo JSON a contagem dos resultados gerais dos testes executados.
 -}
 main = do
   runTestTT tests
