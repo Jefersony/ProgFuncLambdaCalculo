@@ -152,13 +152,16 @@ testsCompress = TestList [ testCompress01, testCompress02, testCompress03, testC
 testCompact01 = TestCase ( assertEqual "testCompact01" [2,2,5,8,8,1] (compact [2,5,8,2,1,8]))
 testCompact02 = TestCase ( assertEqual "testCompact02" [2] (compact [2]))
 testCompact03 = TestCase ( assertEqual "testCompact03" [0,0,0,0,1,1,1,1] (compact  [0,1,0,1,0,1,0,1]))
---testCompact04 = TestCase ( assertEqual "testCompact04" [] (compact []))
 testCompact05 = TestCase ( assertEqual "testCompact05" [1..50] (compact [1..50]))
 
 testsCompact = TestList [ testCompact01,testCompact02,testCompact03,testCompact05]
 
-{- Falta implementar a func encode -}
-testsEncode = TestList []
+testEncode01 = TestCase ( assertEqual "testEncode01" [] (LambdaCalculus.encode ([] :: [Int]) ) )
+testEncode02 = TestCase ( assertEqual "testEncode02" [(1,1)] (LambdaCalculus.encode [1]) )
+testEncode03 = TestCase ( assertEqual "testEncode03" [(1,1), (2,1)] (LambdaCalculus.encode [1,2]) )
+testEncode04 = TestCase ( assertEqual "testEncode04" [(1,2), (2,2), (0,1), (3,1)] (LambdaCalculus.encode [1,2,0,3,2,1]) )
+
+testsEncode = TestList [ testEncode01, testEncode02, testEncode03, testEncode04 ]
 
 testSplit01 = TestCase ( assertEqual "testSplit01" [[0], [9,9,9,9,9]] (LambdaCalculus.split 1 [0,9,9,9,9,9]))
 testSplit02 = TestCase ( assertEqual "testSplit02" [[], [0,9,9,9,9,9]] (LambdaCalculus.split 0 [0,9,9,9,9,9]))
