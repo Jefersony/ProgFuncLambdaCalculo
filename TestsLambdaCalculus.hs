@@ -12,6 +12,9 @@ import Control.Exception.Base
 {- Múltiplos casos de teste para processar as questões de Lambda Calculus
 -}
 
+-- https://stackoverflow.com/questions/46330592/is-it-possible-to-assert-an-error-case-in-hunit
+
+
 testPow01 = TestCase (assertEqual "testPow01: 0 elevado a 0" 1 (pow 0 0) )
 testPow02 = TestCase (assertEqual "testPow02: 1 elevado a 0" 1 (pow 1 0) )
 testPow03 = TestCase (assertEqual "testPow03: 0 elevado a 1" 0 (pow 0 1) )
@@ -96,15 +99,24 @@ testsCoprimo = TestList [testCoprimo01, testCoprimo02, testCoprimo03,testCoprimo
   testCoprimo05,testCoprimo06, testCoprimo07, testCoprimo08, testCoprimo09,
   testCoprimo10, testCoprimo11, testCoprimo12, testCoprimo13, testCoprimo14]
 
-testGoldbach01 = TestCase ( assertEqual "testGoldbach01: goldbach de 3 tem (1,2)" True (elem (1, 2) (goldbach 3)))
-testGoldbach02 = TestCase ( assertEqual "testGoldbach02: goldbach de 3 não tem (0,3)" False (elem (0, 3) (goldbach 3)))
-testGoldbach03 = TestCase ( assertEqual "testGoldbach03: goldbach de 4 tem (2,2)" True (elem (2, 2) (goldbach 4)))
-testGoldbach04 = TestCase ( assertEqual "testGoldbach04: goldbach de 4 tem (1,3)" True (elem (1, 3) (goldbach 4)))
-testGoldbach05 = TestCase ( assertEqual "testGoldbach05: goldbach de 28 não tem (5,24)" False (elem (5, 24) (goldbach 28)))
-testGoldbach06 = TestCase ( assertEqual "testGoldbach06: goldbach de 28 tem (5,23)" True (elem (5, 23) (goldbach 28)))
-testGoldbach07 = TestCase ( assertEqual "testGoldbach07: goldbach de 10 tem (3,7)" True (elem (3, 7) (goldbach 10)))
-testGoldbach08 = TestCase ( assertEqual "testGoldbach08: goldbach de 100 tem (97,3)" True (elem (97, 3) (goldbach 100)))
-testGoldbach09 = TestCase ( assertEqual "testGoldbach09: goldbach de 100 não tem (96,4)" False (elem (96, 4) (goldbach 100)))
+testGoldbach01 = TestCase ( assertEqual "testGoldbach01: goldbach de 3 tem (1,2)"
+  True (elem (1, 2) (goldbach 3)))
+testGoldbach02 = TestCase ( assertEqual "testGoldbach02: goldbach de 3 não tem (0,3)"
+  False (elem (0, 3) (goldbach 3)))
+testGoldbach03 = TestCase ( assertEqual "testGoldbach03: goldbach de 4 tem (2,2)"
+  True (elem (2, 2) (goldbach 4)))
+testGoldbach04 = TestCase ( assertEqual "testGoldbach04: goldbach de 4 tem (1,3)"
+  True (elem (1, 3) (goldbach 4)))
+testGoldbach05 = TestCase ( assertEqual "testGoldbach05: goldbach de 28 não tem (5,24)"
+  False (elem (5, 24) (goldbach 28)))
+testGoldbach06 = TestCase ( assertEqual "testGoldbach06: goldbach de 28 tem (5,23)"
+  True (elem (5, 23) (goldbach 28)))
+testGoldbach07 = TestCase ( assertEqual "testGoldbach07: goldbach de 10 tem (3,7)"
+  True (elem (3, 7) (goldbach 10)))
+testGoldbach08 = TestCase ( assertEqual "testGoldbach08: goldbach de 100 tem (97,3)"
+  True (elem (97, 3) (goldbach 100)))
+testGoldbach09 = TestCase ( assertEqual "testGoldbach09: goldbach de 100 não tem (96,4)"
+  False (elem (96, 4) (goldbach 100)))
 
 testsGoldbach = TestList [testGoldbach01, testGoldbach02, testGoldbach03, testGoldbach04,
   testGoldbach05, testGoldbach06, testGoldbach07, testGoldbach08, testGoldbach09 ]
