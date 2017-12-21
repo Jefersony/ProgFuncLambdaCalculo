@@ -2,18 +2,15 @@ module TestsLambdaCalculus where
 import LambdaCalculus
 import Data.Function
 import Data.Aeson
+import Data.Aeson.Text (encodeToLazyText)
 import Data.Text
 import Data.Text.Lazy.IO as I
-import qualified Data.ByteString.Lazy.Char8 as B
-import Data.Aeson.Text (encodeToLazyText)
 import Test.HUnit
 import Control.Exception.Base
+import Control.Monad as CM
 
-{- Múltiplos casos de teste para processar as questões de Lambda Calculus
--}
-
--- https://stackoverflow.com/questions/46330592/is-it-possible-to-assert-an-error-case-in-hunit
-
+-- Casos de teste para validar as questões de Lambda Calculus
+-- Ao executar o main, os erros que acontecerem são exibidos e um arquivo json é criado com o relatório
 
 testPow01 = TestCase (assertEqual "testPow01: 0 elevado a 0" 1 (pow 0 0) )
 testPow02 = TestCase (assertEqual "testPow02: 1 elevado a 0" 1 (pow 1 0) )
@@ -21,9 +18,10 @@ testPow03 = TestCase (assertEqual "testPow03: 0 elevado a 1" 0 (pow 0 1) )
 testPow04 = TestCase (assertEqual "testPow04: 0 elevado a 2" 0 (pow 0 2) )
 testPow05 = TestCase (assertEqual "testPow05: 5 elevado a 1" 5 (pow 5 1) )
 testPow06 = TestCase (assertEqual "testPow06: 3 elevado a 2" 9 (pow 3 2) )
+testPow07 = TestCase (assertException NegativeNumber (evaluate $  pow 2 (-1) ) ) -- Teste para caso excepcional de expoente negativo
 
-testsPow = TestList [testPow01, testPow02, testPow03, testPow04, testPow05,
-  testPow06]
+testsPow = TestList [ testPow01, testPow02, testPow03, testPow04, testPow05,
+  testPow06, testPow07]
 
 testFatorial01 = TestCase (assertEqual "testFatorial01: fatorial de 0" 1 (fatorial 0) )
 testFatorial02 = TestCase (assertEqual "testFatorial02: fatorial de 1" 1 (fatorial 1) )
@@ -31,9 +29,10 @@ testFatorial03 = TestCase (assertEqual "testFatorial03: fatorial de 2" 2 (fatori
 testFatorial04 = TestCase (assertEqual "testFatorial04: fatorial de 3" 6 (fatorial 3) )
 testFatorial05 = TestCase (assertEqual "testFatorial05: fatorial de 4" 24 (fatorial 4) )
 testFatorial06 = TestCase (assertEqual "testFatorial06: fatorial de 10" 3628800 (fatorial 10) )
+testFatorial07 = TestCase (assertException NegativeNumber (evaluate $  fatorial (-1) ) ) -- Teste para caso excepcional de expoente negativo
 
 testsFatorial = TestList [testFatorial01, testFatorial02, testFatorial03,
-  testFatorial04, testFatorial05, testFatorial06]
+  testFatorial04, testFatorial05, testFatorial06, testFatorial07 ]
 
 testIsPrime01 = TestCase (assertEqual "testIsPrime01: 0 é primo?" False (isPrime 0) )
 testIsPrime02 = TestCase (assertEqual "testIsPrime02: -1 é primo?" False (isPrime (-1)) )
@@ -57,9 +56,10 @@ testFib05 = TestCase (assertEqual "testFib05: fibonacci de 4" 3 (fib 4) )
 testFib06 = TestCase (assertEqual "testFib06: fibonacci de 5" 5 (fib 5) )
 testFib07 = TestCase (assertEqual "testFib07: fibonacci de 6" 8 (fib 6) )
 testFib08 = TestCase (assertEqual "testFib08: fibonacci de 15" 610 (fib 15) )
+testFib09 = TestCase (assertException NegativeNumber (evaluate $  fib (-1) ) ) -- Teste para caso excepcional (fora do domínio do problema) para fibonacci negativo
 
 testsFib = TestList [testFib01, testFib02, testFib03, testFib04, testFib05,
-  testFib06,testFib07,testFib08]
+  testFib06,testFib07,testFib08, testFib09 ]
 
 testMdc01 = TestCase (assertEqual "testeMdc01: mdc entre 0 e 0" 0 (mdc 0 0) )
 testMdc02 = TestCase (assertEqual "testeMdc02: mdc entre 0 e 1" 1 (mdc 0 1) )
@@ -70,15 +70,30 @@ testMdc06 = TestCase (assertEqual "testeMdc06: mdc entre 5 e 15" 5 (mdc 5 15) )
 testMdc07 = TestCase (assertEqual "testeMdc07: mdc entre 7 e 13" 1 (mdc 7 13) )
 testMdc08 = TestCase (assertEqual "testeMdc08: mdc entre 225 e 25" 25 (mdc 225 25) )
 testMdc09 = TestCase (assertEqual "testeMdc09: mdc entre 1 e -1" 1 (mdc 1 (-1) ) )
-testMdc10 = TestCase (assertEqual "testeMdc11: mdc entre -1 e 1" 1 (mdc (-1) 1) )
+testMdc10 = TestCase (assertEqual "testeMdc11: mdc entre -1 e 1" 1 (mdc (-1) 1) ) -- Considerei que números negativos podem ser entrada da função, visto que o sinal negativo não afeta a divisibilidade (http://math.info/Arithmetic/GCF/)
 testMdc11 = TestCase (assertEqual "testeMdc12: mdc entre -1 e -1" 1 (mdc (-1) (-1) ) )
 testMdc12 = TestCase (assertEqual "testeMdc13: mdc entre -2 e -2" 2 (mdc (-2) (-2) ) )
 testMdc13 = TestCase (assertEqual "testeMdc14: mdc entre -7 e -13" 1 (mdc (-7) (-13) ) )
 testMdc14 = TestCase (assertEqual "testeMdc15: mdc entre -12 e -24" 12 (mdc (-12) (-24) ) )
 
-testsMdc = TestList [testMdc01, testMdc02, testMdc03, testMdc04, testMdc05,
+testsMdc = TestList [ testMdc01, testMdc02, testMdc03, testMdc04, testMdc05,
   testMdc06, testMdc07, testMdc08, testMdc09, testMdc10, testMdc11, testMdc12,
-  testMdc13, testMdc14]
+  testMdc13, testMdc14 ]
+
+{- Utilizei como base para os parâmetros dos testes a definição dos autores que defendem que 0 pode ser utilizado
+como entrada para a função mmc (referência: https://en.wikipedia.org/wiki/Least_common_multiple )
+ -}
+testMmc01 = TestCase (assertEqual "testMmc01: mmc entre 0 e 0" 0 (mmc 0 0) )
+testMmc02 = TestCase (assertEqual "testMmc02: mmc entre 0 e 1" 0 (mmc 0 1) )
+testMmc03 = TestCase (assertEqual "testMmc03: mmc entre 1 e 0" 0 (mmc 1 0) )
+testMmc04 = TestCase (assertEqual "testMmc04: mmc entre 1 e 1" 1 (mmc 1 1) )
+testMmc05 = TestCase (assertEqual "testMmc05: mmc entre 1 e 2" 2 (mmc 1 2) )
+testMmc06 = TestCase (assertEqual "testMmc06: mmc entre 3 e 3" 3 (mmc 3 3) )
+testMmc07 = TestCase (assertEqual "testMmc07: mmc entre 4 e 2" 4 (mmc 4 2) )
+testMmc08 = TestCase (assertEqual "testMmc08: mmc entre 3 e 7" 21 (mmc 3 7) )
+
+testsMmc = TestList [ testMmc01, testMmc02, testMmc03, testMmc04, testMmc05, testMmc06,
+   testMmc07, testMmc08 ]
 
 testCoprimo01 = TestCase (assertEqual "testCoprimo01: 0 e 0 são coprimos?" False (coprimo 0 0) )
 testCoprimo02 = TestCase (assertEqual "testCoprimo02: 0 e 1 são coprimos?" True (coprimo 0 1) )
@@ -95,9 +110,9 @@ testCoprimo12 = TestCase (assertEqual "testCoprimo12: -2 e -2 são coprimos?" Fa
 testCoprimo13 = TestCase (assertEqual "testCoprimo13: -7 e -13 são coprimos?" True (coprimo (-7) (-13) ) )
 testCoprimo14 = TestCase (assertEqual "testCoprimo14: -12 e -24 são coprimos?" False (coprimo (-12) (-24) ) )
 
-testsCoprimo = TestList [testCoprimo01, testCoprimo02, testCoprimo03,testCoprimo04,
+testsCoprimo = TestList [ testCoprimo01, testCoprimo02, testCoprimo03,testCoprimo04,
   testCoprimo05,testCoprimo06, testCoprimo07, testCoprimo08, testCoprimo09,
-  testCoprimo10, testCoprimo11, testCoprimo12, testCoprimo13, testCoprimo14]
+  testCoprimo10, testCoprimo11, testCoprimo12, testCoprimo13, testCoprimo14 ]
 
 testGoldbach01 = TestCase ( assertEqual "testGoldbach01: goldbach de 3 tem (1,2)"
   True (elem (1, 2) (goldbach 3)))
@@ -117,28 +132,36 @@ testGoldbach08 = TestCase ( assertEqual "testGoldbach08: goldbach de 100 tem (97
   True (elem (97, 3) (goldbach 100)))
 testGoldbach09 = TestCase ( assertEqual "testGoldbach09: goldbach de 100 não tem (96,4)"
   False (elem (96, 4) (goldbach 100)))
+testGoldbach10 = TestCase (assertException ForbiddenNumber (evaluate $  goldbach 2 ) ) -- Teste para caso excepcional (fora do domínio do problema) para goldbach igual a dois
+testGoldbach11 = TestCase (assertException ForbiddenNumber (evaluate $  (goldbach (-1)) ) ) -- Teste para caso excepcional (fora do domínio do problema) para goldbach menor que dois
 
 testsGoldbach = TestList [testGoldbach01, testGoldbach02, testGoldbach03, testGoldbach04,
-  testGoldbach05, testGoldbach06, testGoldbach07, testGoldbach08, testGoldbach09 ]
+  testGoldbach05, testGoldbach06, testGoldbach07, testGoldbach08, testGoldbach09,
+  testGoldbach10, testGoldbach11 ]
 
 testMeuLast01 = TestCase ( assertEqual "last de lista com um elemento" 1 (meuLast [1]) )
 testMeuLast02 = TestCase ( assertEqual "last de lista com dois elementos" 2 (meuLast [1,2]) )
 testMeuLast03 = TestCase ( assertEqual "last de lista com n elementos" 200 (meuLast [1..200]) )
+testMeuLast04 = TestCase (assertException EmptyList (evaluate $ (meuLast []) ) ) -- Teste para caso excepcional (fora do domínio do problema) para last de uma lista vazia
 
-testsMeuLast = TestList [testMeuLast01, testMeuLast02, testMeuLast03 ]
+testsMeuLast = TestList [testMeuLast01, testMeuLast02, testMeuLast03, testMeuLast04 ]
 
 testPenultimo01 = TestCase ( assertEqual "testPenultimo01: penultimo de lista com 2" 1 (penultimo [1,2]) )
 testPenultimo02 = TestCase ( assertEqual "testPenultimo02: for (penultimo [1,2,3,4,5,6])" 5 (penultimo [1,2,3,4,5,6]) )
 testPenultimo03 = TestCase ( assertEqual "testPenultimo03: penultimo de lista com muitos elementos" 99 (penultimo [1,3..101]) )
+testPenultimo04 = TestCase (assertException EmptyList (evaluate $  penultimo [1] ) ) -- Teste para caso excepcional (fora do domínio do problema) para penúltimo de uma lista com 1 elemento
+testPenultimo05 = TestCase (assertException EmptyList (evaluate $  penultimo [] ) ) -- Teste para caso excepcional (fora do domínio do problema) para penúltimo de uma lista vazia
 
-testsPenultimo = TestList [ testPenultimo01, testPenultimo02, testPenultimo03 ]
+testsPenultimo = TestList [ testPenultimo01, testPenultimo02, testPenultimo03,
+  testPenultimo04, testPenultimo05 ]
 
 testElementAt01 = TestCase ( assertEqual "testElementAt01: elemento na pos 1 de uma lista com tamanho 1" 1 (elementAt 1 [1]))
 testElementAt02 = TestCase ( assertEqual "testElementAt02: elemento pos 1 de uma lista de tamanho n" 1 (elementAt 1 [1..10]))
 testElementAt03 = TestCase ( assertEqual "testElementAt01: elemento na pos 10 de uma lista de tamanho 10" 10 (elementAt 10 [1..10]))
 testElementAt04 = TestCase ( assertEqual "testElementAt03: elemento posicionado no meio da lista" 10 (elementAt 10 [1..20]))
+testElementAt05 = TestCase (assertException EmptyList (evaluate $  elementAt 4 [1,2,3]) ) -- Teste para caso excepcional (fora do domínio do problema) para elementAt com index fora da lista
 
-testsElementAt = TestList [ testElementAt01, testElementAt02, testElementAt03, testElementAt04 ]
+testsElementAt = TestList [ testElementAt01, testElementAt02, testElementAt03, testElementAt04, testElementAt05 ]
 
 testMeuLength01 = TestCase ( assertEqual "testMeuLength01: lista vazia" 0 (meuLength []) )
 testMeuLength02 = TestCase ( assertEqual "testMeuLength02: lista com um elemento" 1 (meuLength [1]) )
@@ -170,7 +193,6 @@ testCompress04 = TestCase ( assertEqual "testCompress04: for compress [2,5,8,2,1
 testCompress05 = TestCase ( assertEqual "testCompress05: for compress [2,5,2,1,8,8]" [2,5,1,8] (compress [2,5,2,1,8,8]) )
 testCompress06 = TestCase ( assertEqual "testCompress06: for compress [1,5..300]" [1,5..300] (compress [1,5..300]) )
 testCompress07 = TestCase ( assertEqual "testCompress07: for compress alakazan" "alkzn" (compress "alakazan") )
-
 
 testsCompress = TestList [ testCompress01, testCompress02, testCompress03, testCompress04,
   testCompress05, testCompress06, testCompress07 ]
@@ -238,16 +260,63 @@ testMySum03 = TestCase (assertEqual "testMySum03: soma de lista vazia" 0 (mySum 
 
 testsMySum = TestList [ testMySum01, testMySum02, testMySum03 ]
 
-tests = TestList [ testsPow, testsFatorial, testsIsPrime, testsFib, testsMdc,
+testMaxList01 = TestCase (assertEqual "testMaxList01: for maxList [1]" 1 (maxList [1]) )
+testMaxList02 = TestCase (assertEqual "testMaxList02: for maxList [1,5]" 5 (maxList [1, 5]) )
+testMaxList03 = TestCase (assertEqual "testMaxList03: for maxList [5,1]" 5 (maxList [5, 1]) )
+testMaxList04 = TestCase (assertEqual "testMaxList04: for maxList [1..100]" 100 (maxList [1..100]) )
+testMaxList05 = TestCase (assertException EmptyList (evaluate $  maxList [] ) ) -- Teste para caso excepcional (fora do domínio do problema) para maxList de uma lista vazia
+
+testsMaxList = TestList [ testMaxList01,testMaxList02, testMaxList03, testMaxList04, testMaxList05 ]
+
+testBuildPalindrome01 = TestCase (assertEqual "testBuildPalindrome01: for buildPalindrome []" True (Prelude.null (buildPalindrome []))  )
+testBuildPalindrome02 = TestCase (assertEqual "testBuildPalindrome02: for buildPalindrome [1]" [1,1] (buildPalindrome [1]))
+testBuildPalindrome03 = TestCase (assertEqual "testBuildPalindrome03: for buildPalindrome [1,2,3]" [1,2,3,3,2,1] (buildPalindrome [1,2,3]))
+testBuildPalindrome04 = TestCase (assertEqual "testBuildPalindrome04: for buildPalindrome os" "osso" (buildPalindrome "os"))
+
+testsBuildPalindrome = TestList [ testBuildPalindrome01, testBuildPalindrome02, testBuildPalindrome03, testBuildPalindrome04 ]
+
+testMean01 = TestCase (assertEqual "testMean01: for mean [1]" 1.0 (mean [1]) )
+testMean02 = TestCase (assertEqual "testMean02: for mean [0,0,0,0]" 0.0 (mean [0,0,0,0]) )
+testMean03 = TestCase (assertEqual "testMean03: for mean [1,3..100]" 50.0 (mean [1,3..100]) )
+testMean04 = TestCase (assertEqual "testMean04: for mean [2,3]" 2.5 (mean [2,3]) )
+testMean05 = TestCase (assertEqual "testMean05: for mean [50..600]" 325.0 (mean [50..600]) )
+testMean06 = TestCase (assertException EmptyList (evaluate $  mean [] ) ) -- Teste para caso excepcional (fora do domínio do problema) para mean de uma lista vazia
+
+testsMean = TestList [ testMean01, testMean02, testMean03, testMean04, testMean05, testMean06 ]
+
+testMyAppend01 = TestCase (assertEqual "testMyAppend01: for myAppend [] []" True (Prelude.null (myAppend [] [])) )
+testMyAppend02 = TestCase (assertEqual "testMyAppend02: for myAppend [1] []" [1] (myAppend [1] []) )
+testMyAppend03 = TestCase (assertEqual "testMyAppend03: for myAppend [] [1]" [1] (myAppend [] [1]) )
+testMyAppend04 = TestCase (assertEqual "testMyAppend04: for myAppend [1,2,3] [4,5,6]" [1] (myAppend [1] []) )
+testMyAppend05 = TestCase (assertEqual "testMyAppend05: for myAppend haskell +  é top" "haskell é top" (myAppend "haskell" " é top") )
+
+testsMyAppend = TestList [ testMyAppend01, testMyAppend02, testMyAppend03, testMyAppend04 ]
+
+-- Lista com todos os testes do módulo
+tests = TestList [ testsPow, testsFatorial, testsIsPrime, testsFib, testsMdc, testsMmc,
   testsCoprimo, testsGoldbach, testsMeuLast, testsPenultimo, testsElementAt,
   testsMeuLength, testsMeuReverso, testsIsPalindrome, testsCompress, testsCompact,
-  testsEncode, testsSplit, testsSlice, testsInsertAt, testsSort, testsMySum ]
+  testsEncode, testsSplit, testsSlice, testsInsertAt, testsSort, testsMySum,
+  testsMaxList, testsBuildPalindrome, testsMean, testsMyAppend ]
 
+  {- Método para assegurar que a chamada de função lança uma determinada
+  exceção, gerando uma falha caso nenhuma exceção seja lançada.
+  -}
+assertException :: (Exception e, Eq e) => e -> IO a -> IO ()
+assertException ex action =
+  handleJust isWanted (const $ return ()) $ do
+    action
+    assertFailure $ "Expected exception: " ++ show ex
+  where isWanted = guard . (== ex)
+
+{- Função utilizada para gerar o valor PutText a ser usado na execução dos testes -}
+myPutText = PutText reportMsg 0  :: PutText Int
+
+{- Função auxiliar que gera um contador para os casos de teste -}
 reportMsg :: String -> Bool -> Int -> IO Int
 reportMsg message isProgress count = do
   return (count + 1)
 
-myPutText = PutText reportMsg 0  :: PutText Int
 
 {- Cria uma instância para representar no formato JSON o report de erros do
 aluno, contendo: matricula, total de testes, testes que passaram, testes que
@@ -261,8 +330,9 @@ instance ToJSON Counts where
     , pack "passaram" .= show (tried - errors - failures)
     ]
 
-{- Roda os testes, mostrando o relatório de cada erro (se houver). Armazena em
-um arquivo JSON a contagem dos resultados gerais dos testes executados.
+{- Roda os testes e exibe na tela o relatório de cada erro que aconteceu. Armazena em
+um arquivo JSON a amostragem coletada dos resultados dos testes, como definido na
+instância de toJSON Counts.
 -}
 main = do
   runTestTT tests
